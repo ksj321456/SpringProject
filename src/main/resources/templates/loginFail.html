@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 실패</title>
+</head>
+<body>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  if (/*[[${param.error}]]*/) {
+    alert("이메일 또는 비밀번호가 잘못되었습니다.");
+    window.location.href = "/login";
+  }
+  /*]]>*/
+</script>
+</body>
+</html>
