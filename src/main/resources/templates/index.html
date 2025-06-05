@@ -8,6 +8,21 @@
 </head>
 
 <body>
+<!-- 오류 alert 표시용 -->
+<script th:if="${nameError}" th:inline="javascript">
+    alert("이름은 필수 항목입니다.");
+</script>
+<script th:if="${brandError}" th:inline="javascript">
+    alert("브랜드명은 필수 항목입니다.");
+</script>
+<script th:if="${madeInError}" th:inline="javascript">
+    alert("생산지는 필수 항목입니다.");
+</script>
+<script th:if="${priceError}" th:inline="javascript">
+    alert("가격은 1 이상이어야 합니다.");
+</script>
+
+
 <div class="container">
     <h1 class="mt-5">Product List</h1>
 

@@ -1,11 +1,14 @@
 package kr.ac.hansung.cse.hellospringdatajpa.controller;
 
+import jakarta.validation.Valid;
 import kr.ac.hansung.cse.hellospringdatajpa.entity.Product;
 import kr.ac.hansung.cse.hellospringdatajpa.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -47,12 +50,27 @@ public class ProductController {
     // @RequestBody는 HTTP 요청 본문에 포함된
     //  JSON 데이터(예: {"name": "Laptop", "brand": "Samsung", "madeIn": "Korea", "price": 1000.00})를 Product 객체에 매핑
     @PostMapping("/save")
-    public String saveProduct(@ModelAttribute("product") Product product) {
+    public String saveProduct(@Valid @ModelAttribute("product") Product product,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> {
+                String field = error.getField();
+                switch (field) {
+                    case "name" -> redirectAttributes.addFlashAttribute("nameError", true);
+                    case "brand" -> redirectAttributes.addFlashAttribute("brandError", true);
+                    case "madeIn" -> redirectAttributes.addFlashAttribute("madeInError", true);
+                    case "price" -> redirectAttributes.addFlashAttribute("priceError", true);
+                }
+            });
+            return "redirect:/products";
+        }
 
         service.save(product);
-
         return "redirect:/products";
     }
+
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable(name = "id") Long id) {
