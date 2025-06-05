@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <!-- 추가 -->
+
+<head th:insert="~{common :: commonHead}">
+    <title>Product Manager</title>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="mt-5">Product List</h1>
+
+    <!-- ADMIN만 "Create New Product" 버튼 표시 -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <a class="btn btn-primary mb-3" th:href="@{/products/new}">Create New Product</a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-outline-secondary float-end">Logout</button>
+        </form>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Made In</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProducts}">
+            <td th:text="${product.id}">Product ID</td>
+            <td th:text="${product.name}">Name</td>
+            <td th:text="${product.brand}">Brand</td>
+            <td th:text="${product.madeIn}">Made in</td>
+            <td th:text="${product.price}">Price</td>
+            <td>
+                <!-- ADMIN만 Edit/Delete 가능 -->
+                <div sec:authorize="hasRole('ADMIN')">
+                    <a class="btn btn-primary btn-sm" th:href="@{'/products/edit/' + ${product.id}}">Edit</a>
+                    <a class="btn btn-danger btn-sm" th:href="@{'/products/delete/' + ${product.id}}">Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS fragment 삽입 -->
+<div th:insert="~{common :: commonScript}"></div>
+</body>
+</html>
