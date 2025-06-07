@@ -29,6 +29,7 @@
     <!-- ADMIN만 "Create New Product" 버튼 표시 -->
     <div sec:authorize="hasRole('ADMIN')">
         <a class="btn btn-primary mb-3" th:href="@{/products/new}">Create New Product</a>
+        <a class="btn btn-warning mb-3" th:href="@{/admin/home}">Go to Admin Home</a>
     </div>
 
     <div sec:authorize="isAuthenticated()">

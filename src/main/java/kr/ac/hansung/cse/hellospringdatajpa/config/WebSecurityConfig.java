@@ -50,6 +50,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/products").hasRole("USER")
                         // 그 외 나머지 수정, 등록, 삭제는 ROLE_ADMIN만 가능
                         .requestMatchers("/products/**").hasRole("ADMIN")
+                        // ADMIN 페이지 추가
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
